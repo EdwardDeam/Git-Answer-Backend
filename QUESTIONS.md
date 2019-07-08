@@ -1,6 +1,6 @@
 # MERN Stack Project
-### Git Answer for Carl Gray by
-### Edward Deam, Tony Xu, Owen Shepard
+Final project of coder academy by [Edward Deam](https://github.com/EdwardDeam), [Tony Xu](https://github.com/DesignTX) and [Owen Shepard](https://github.com/owshepherd)
+## Git Answer
 
 ## Description of libraries used in the app.
 TODO: Excellent use of libraries and a complete and detailed description of he libraraies used in the app.
@@ -11,7 +11,21 @@ TODO: Excellent use of libraries and a complete and detailed description of he l
 TODO: Shows almost flawless understanding of the high level structure of the app
 
 ## Design of ERD
-TODO: ERD accurately reflects an efficient and practical database design for project, using corrent ERD symbology.
+
+![alt text][ERD_Diagram]
+
+### Description of symbols used
+![Description of symbols](https://d2slcw3kip6qmk.cloudfront.net/marketing/pages/chart/erd-symbols/ERD-Notation.PNG)
+
+Sources: 
+[ER Diagam Symbols and meaning](https://www.lucidchart.com/pages/ER-diagram-symbols-and-meaning)
+
+## Database schema
+TODO: Creates a well constructed Database schema that contains methods which meaningfully contribute to the solution.
+
+https://stackoverflow.com/questions/12147686/storing-upvotes-downvotes-in-mongodb
+https://stackoverflow.com/questions/11077202/in-mongodb-is-it-practical-to-keep-all-comments-for-a-post-in-one-document
+https://docs.mongodb.com/ecosystem/use-cases/storing-comments/
 
 ## Datafow Diagram
 TODO: Provides dataflow diagram(s) that strictly follow the standard convensions to clearly identify the processes within your application. Clearly depicts where data is coming from, where it is going and how it is being stored.
@@ -28,7 +42,7 @@ TODO: Simple and clear standards for planning methodology chosen and adhered to
 ## Provide UX/UI design documentation(wireframes) that adequately show Agile methodology implementation.
 TODO: Provides wireframes that show exceptional planning of project flow and structure including but not limited to space distrobution, content prioritisation, intended actions, functions, relationships between screens.
 
-## Demonstrated cold flow control
+## Demonstrated code flow control
 TODO: Flawless code flow control: documented test coverage/successful results for all user stories, including corner cases
 
 ## Apply Object oriented principles/patterns
@@ -60,8 +74,7 @@ TODO: Shows thorough understanding of the use-cases of Arrays and utilises them 
 ## Use of Objects
 TODO: Understands, utilises and manipulates Objects using a range of methods to benefit the solution.
 
-## Database schema
-TODO: Creates a well constructed Database schema that contains methods which meaningfully contribute to the solution.
+
 
 ## App functionality
 TODO: Builds an outstanding application, that meets client and user needs and exceeds expectations
@@ -93,4 +106,4 @@ TODO: Effectivlt describes a range of skills and knowledge used to complete a gr
 ## Evaluate how effective your knowledge and skills were this project, and suggest changes or improvements for future projects of a similar nature?
 TODO: Evaluates effectiveness of knowledge and skills accurately, providing examples, and providing an insightful improvement on each skill.
 
-
+[ERD_Diagram]: ./docs/GitAnswerDB.png "Database ERD Diagram"
