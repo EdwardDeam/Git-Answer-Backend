@@ -1,0 +1,11 @@
+{
+  "name": "git-answer-backend",
+  "alias": "git-answer-backend",
+  "env": {
+    "DB_URL": "mongodb://localhost/gitanswer"
+  },
+  "version": 2,
+  "builds" : [
+    { "src": "api.js", "use": "@now/node-server" }
+  ]
+}
