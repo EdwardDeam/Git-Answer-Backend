@@ -2,10 +2,9 @@
   "name": "git-answer-backend",
   "alias": "git-answer-backend",
   "env": {
-    "DB_URL": "mongodb://localhost/gitanswer"
+    "DB_URL": "mongodb+srv://admin:VMCTuRO8rZUgBxII@cluster0-pg6kq.mongodb.net/test?retryWrites=true&w=majority"
   },
   "version": 2,
-  "builds" : [
-    { "src": "api.js", "use": "@now/node-server" }
-  ]
+  "builds": [{ "src": "api.js", "use": "@now/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "api.js" }]
 }
