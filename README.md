@@ -2,11 +2,8 @@
 From the rubric:  
 `The code adheres to all team standards. The code is exceptionally well organised and very easy to follow. Comments are complete and useful; variables' and functions’ purposes are clearly communicated by their names.`
 
-So try and keep that in mind when naming variables and functions. And add comments to code as you write it, much easier than having to add them in on thursday night!
-
 ## Prefered Packages
-Try to use npm packages that have been used in the class as a preference. This makes it easier for everyone to know what is happening and easier for the teachers to help debug our code.
-
+Try to use npm packages that have been used in the class as a preference.
 1. Joi for data validation.
 2. JsonWebToken for creating tokens.
 3. bCrypt for hashing passwords.
