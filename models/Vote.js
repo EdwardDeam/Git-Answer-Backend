@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 
 const VoteSchema = new mongoose.Schema({
-  user_id: {},
-  votes: {} // should we tally this individually instead of having a seperate schema? OS
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  votes: {
+    type: Number
+  }
 });
 
 module.exports = Post = mongoose.model('post', PostSchema);

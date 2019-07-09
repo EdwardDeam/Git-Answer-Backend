@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const TagSchema = new mongoose.Schema({
   id: {
-    type: Number, //what are we using for ID generation?
+    type: Number,
     required: true
   },
   name: {

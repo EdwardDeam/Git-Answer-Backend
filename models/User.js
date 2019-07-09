@@ -17,11 +17,17 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  saved_posts: {},
+  saved_posts: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post'
+  },
   authenticated: {
     type: Boolean
   },
-  own_posts: {},
+  own_posts: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post'
+  },
   admin: {
     type: Boolean,
     required: true,

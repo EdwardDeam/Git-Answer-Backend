@@ -6,8 +6,8 @@ const PostSchema = new mongoose.Schema({
     required: true
   },
   author: {
-    user_id, // difficulty reading
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   text: {
     type: String,
@@ -16,13 +16,28 @@ const PostSchema = new mongoose.Schema({
   page_views: {
     type: Number
   },
-  tags: {},
+  tags: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Tag'
+    }
+  ],
   date: {
     type: Date,
     default: Date.now
   },
-  comments: {},
-  votes: {}
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment'
+    }
+  ],
+  votes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Vote'
+    }
+  ]
 });
 
 module.exports = Post = mongoose.model('post', PostSchema);
