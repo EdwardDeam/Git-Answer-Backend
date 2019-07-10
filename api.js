@@ -1,16 +1,21 @@
 require("dotenv").config();
-const app = require("./express")
+const app = require("./express");
 const mongoose = require("mongoose");
-const PORT = process.env.PORT || 5000;
+const config = require("./config/config");
+console.log(config);
+const PORT = config.port;
 
 // IIFE To Connect to database and catch any errors
 (async function dbconnect() {
   try {
-    await mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useCreateIndex: true }); 
+    await mongoose.connect(config.mongoURI, {
+      useNewUrlParser: true,
+      useCreateIndex: true
+    });
     console.info("Connected to MongoDB");
   } catch (error) {
     console.error(errror);
-    throw new Error(`Unable to connect to database: ${process.env.DB_URL}`);
+    throw new Error(`Unable to connect to database: ${config.mongoURI}`);
     process.exit(1);
   }
 })();
@@ -22,5 +27,3 @@ app.get("/test", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Listening on Port ${PORT}`);
 });
-
-
