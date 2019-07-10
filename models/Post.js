@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema({
   votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }]
 });
 
-const Post = mongoose.model("post", PostSchema);
+const Post = mongoose.model("Post", postSchema);
 
 const validatePost = post => {
   const schema = Joi.object().keys({
@@ -32,5 +32,5 @@ const validatePost = post => {
 };
 module.exports = {
   Post,
-  postSchema
+  validatePost
 };
