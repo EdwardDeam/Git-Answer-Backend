@@ -6,7 +6,6 @@ const config = require("./config/config");
 console.log(config);
 const PORT = config.port;
 
-
 // IIFE To Connect to database and catch any errors
 (async function dbconnect() {
   try {
