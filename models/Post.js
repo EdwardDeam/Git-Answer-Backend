@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const { Tag, tagSchema } = require("./Tag");
+const Joi = require("joi");
 
 const postSchema = new mongoose.Schema({
   title: String,
@@ -16,7 +18,7 @@ const Post = mongoose.model("Post", postSchema);
 const validatePost = post => {
   const schema = Joi.object().keys({
     title: Joi.string()
-      .min(15)
+      .min(10)
       .max(150)
       .required(),
     author: Joi.string()
@@ -27,7 +29,8 @@ const validatePost = post => {
       .required(),
     pageViews: Joi.number()
       .integer()
-      .positive()
+      .positive(),
+    tags: Joi.array().items(Joi.string())
   });
   return Joi.validate(post, schema);
 };
