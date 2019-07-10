@@ -1,15 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Joi = require("joi");
 
-const TagSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true
-  },
-  name: {
-    // consider renaming to label for ease of understanding?
-    type: String,
-    required: true
-  }
+const tagSchema = new mongoose.Schema({
+  name: String
 });
 
-module.exports = Tag = mongoose.model('tag', TagSchema);
+const Tag = mongoose.model("Tag", tagSchema);
+
+const validateTag = tag => {
+  const schema = Joi.object().keys({
+    // Stop uploading of long tags
+    name: Joi.string()
+      .max(30)
+      .required()
+  });
+  return Joi.validate(tag, schema);
+};
+
+module.exports = {
+  Tag,
+  validateTag
+};

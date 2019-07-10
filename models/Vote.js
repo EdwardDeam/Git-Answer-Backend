@@ -1,13 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const VoteSchema = new mongoose.Schema({
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  votes: {
-    type: Number
-  }
+const voteSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  vote: Number
 });
 
-module.exports = Post = mongoose.model('post', PostSchema);
+const Vote = mongoose.model("Vote");
+
+const validatePost = vote => {
+  const schema = Joi.object().keys({
+    vote: Joi.Number.min(-1).max(1)
+  });
+  return Joi.validate(vote, schema);
+};
+
+module.exports = {
+  Vote,
+  voteSchema
+};

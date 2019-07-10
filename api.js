@@ -1,9 +1,11 @@
 require("dotenv").config();
 const app = require("./express");
 const mongoose = require("mongoose");
+
 const config = require("./config/config");
 console.log(config);
 const PORT = config.port;
+
 
 // IIFE To Connect to database and catch any errors
 (async function dbconnect() {
@@ -15,8 +17,7 @@ const PORT = config.port;
     console.info("Connected to MongoDB");
   } catch (error) {
     console.error(errror);
-    throw new Error(`Unable to connect to database: ${config.mongoURI}`);
-    process.exit(1);
+    throw new Error(`Unable to connect to database: ${localMongo}`);
   }
 })();
 
