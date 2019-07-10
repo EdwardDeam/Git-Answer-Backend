@@ -1,13 +1,16 @@
 require("dotenv").config();
 const app = require("./express");
 const mongoose = require("mongoose");
-const PORT = process.env.PORT || 5000;
-const localMongo = "mongodb://localhost:27017/GitAnswerDev";
+
+const config = require("./config/config");
+console.log(config);
+const PORT = config.port;
+
 
 // IIFE To Connect to database and catch any errors
 (async function dbconnect() {
   try {
-    await mongoose.connect(localMongo, {
+    await mongoose.connect(config.mongoURI, {
       useNewUrlParser: true,
       useCreateIndex: true
     });
