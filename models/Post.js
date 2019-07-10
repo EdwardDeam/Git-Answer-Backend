@@ -29,7 +29,9 @@ const validatePost = post => {
       .integer()
       .positive()
   });
+  return Joi.validate(post, schema);
 };
+
 module.exports = {
   Post,
   validatePost
