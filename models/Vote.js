@@ -5,9 +5,9 @@ const voteSchema = new mongoose.Schema({
   vote: Number
 });
 
-const Vote = mongoose.model("Vote");
+const Vote = mongoose.model("Vote", voteSchema);
 
-const validatePost = vote => {
+const validateVote = vote => {
   const schema = Joi.object().keys({
     vote: Joi.Number.min(-1).max(1)
   });
@@ -16,5 +16,5 @@ const validatePost = vote => {
 
 module.exports = {
   Vote,
-  voteSchema
+  validateVote
 };

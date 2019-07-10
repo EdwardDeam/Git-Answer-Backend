@@ -15,31 +15,41 @@ router.get("/", async (req, res) => {
 // Add post to database
 router.post("/", async (req, res) => {
   // Test against Joi validation and return the first error
-  const { error } = validateComment(req.body);
+  const { error } = validatePost(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   // Find and add new tags
+  const newTags = [];
   if (req.body.tags) {
-    const allTags = await Tag.find({});
-    req.body.tags.foreach(tag => {
-      if (!allTags.includes({ name: tag })) {
-        const newTag = new Tag({ name: tag });
+    // req.body.tags.forEach(tag => {
+    for (let i = 0; i < req.body.tags.length; i++) {
+      let tag = req.body.tags[i];
+      let newTag = await Tag.findOne({ name: tag });
+      if (newTag) {
+        newTags.push(newTag);
+      } else {
+        newTag = new Tag({ name: tag });
+        console.log(`NewTag: ${newTag.name}`);
         await newTag.save();
+        newTags.push(newTag);
       }
-    });
+    }
+    req.body.tags = newTags;
+    //)};
   } else {
     // if no tags present set to empty array
-    req.body.tags = [];
+    req.body.tags = newTags;
   }
 
   // Create and save the new post
-  const newPost = new Post(_.pick(req.body, ["title", "author", "text"]));
-  newPost.tags = postTags;
+  const newPost = new Post(
+    _.pick(req.body, ["title", "author", "text", "tags"])
+  );
   await newPost.save();
 
-  // Log and return new comment
-  console.log(`Comment (${newComment._id}) saved.`);
-  res.send(_.pick(newComment, ["author", "text"]));
+  // Log and return new post
+  console.log(newPost);
+  res.send(newPost);
 });
 
 module.exports = router;
