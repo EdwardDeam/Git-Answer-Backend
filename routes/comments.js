@@ -22,6 +22,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   const comments = await Comment.find({});
+  res.send(comments);
 });
 
 router.post("/", async (req, res) => {
