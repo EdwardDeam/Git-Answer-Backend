@@ -1,11 +1,11 @@
-const _ = require("lodash");
-const { Post, validatePost } = require("../models/Post");
-const { Tag, validateTag } = require("../models/Tag");
-const express = require("express");
+const _ = require('lodash');
+const { Post, validatePost } = require('../models/Post');
+const { Tag, validateTag } = require('../models/Tag');
+const express = require('express');
 const router = express.Router();
 
 // Return all posts
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   const posts = await Post.find({});
   res.send(posts);
 });
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 // TODO: Only get comments related to a specific post
 
 // Add post to database
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   // Test against Joi validation and return the first error
   const { error } = validatePost(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -43,13 +43,24 @@ router.post("/", async (req, res) => {
 
   // Create and save the new post
   const newPost = new Post(
-    _.pick(req.body, ["title", "author", "text", "tags"])
+    _.pick(req.body, ['title', 'author', 'text', 'tags'])
   );
   await newPost.save();
 
   // Log and return new post
   console.log(newPost);
   res.send(newPost);
+});
+
+// Delete post from database
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const foundPost = await Post.findOneAndDelete({ _id: id });
+    return res.status(200).send(`Post deleted: ${foundPost.title}`);
+  } catch (err) {
+    return res.status(400).send(`Post deletion error: ${err}`);
+  }
 });
 
 module.exports = router;
