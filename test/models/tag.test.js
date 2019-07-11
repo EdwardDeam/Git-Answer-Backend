@@ -23,7 +23,7 @@ describe("Tag model test", () => {
     expect(Tag).not.to.be.undefined;
   });
 
-  describe("get Tags", () => {
+  describe("Get Tags", () => {
     it("gets all tags", async () => {
       // Setup dummy tags
       const tag1 = new Tag({ name: "CSS" });
@@ -32,19 +32,51 @@ describe("Tag model test", () => {
       await tag2.save();
 
       const foundTags = await Tag.find({});
-      const expected1 = "CSS";
-      const expected2 = "Javascript";
+      const expectedName1 = "CSS";
+      const expectedName2 = "Javascript";
 
-      const actual1 = foundTags[0].name;
-      const actual2 = foundTags[1].name;
+      const actualName1 = foundTags[0].name;
+      const actualName2 = foundTags[1].name;
 
-      expect(actual1).to.equal(expected1);
-      expect(actual2).to.equal(expected2);
+      expect(actualName1).to.equal(expectedName1);
+      expect(actualName2).to.equal(expectedName2);
+    });
+    it("gets a single tag by _id", async () => {
+      const testTag = new Tag({ name: "Rust" });
+      const savedTag = await testTag.save();
+
+      const foundTag = await Tag.findById(savedTag._id);
+      const expectedName = "Rust";
+      const actualName = foundTag.name;
+
+      expect(actualName).to.equal(expectedName);
+    });
+    it("gets a single tag by name", async () => {
+      const testTag = new Tag({ name: "Rust" });
+      await testTag.save();
+
+      const foundTag = await Tag.findOne({ name: "Rust" });
+      const expectedName = "Rust";
+      const actualName = foundTag.name;
+
+      expect(actualName).to.equal(expectedName);
     });
   });
 
-  describe("update tag", () => {
-    it("upadates a single tag", async () => {
+  describe("Save tag", () => {
+    it("saves a single tag", async () => {
+      const testTag = new Tag({ name: "React" });
+      const savedTag = await testTag.save();
+
+      const expectedName = "React";
+      const actualName = savedTag.name;
+
+      expect(actualName).to.equal(expectedName);
+    });
+  });
+
+  describe("Update tag", () => {
+    it("upadates a tags name", async () => {
       const testTag = new Tag({ name: "CSS" });
       await testTag.save();
 
@@ -55,6 +87,28 @@ describe("Tag model test", () => {
       const actual = foundTag.name;
 
       expect(actual).to.equal(expected);
+    });
+  });
+
+  describe("Delete tag", () => {
+    it("deletes a single tag by name", async () => {
+      const testTag = new Tag({ name: "CSS" });
+      await testTag.save();
+
+      await Tag.deleteOne({ name: "CSS" });
+      const deletedTag = await Tag.findOne({ name: "CSS" });
+
+      expect(deletedTag).to.be.null;
+    });
+
+    it("deletes a single tag by _id", async () => {
+      const testTag = new Tag({ name: "CSS" });
+      const savedTag = await testTag.save();
+
+      await Tag.findByIdAndDelete(savedTag._id);
+      const deletedTag = await Tag.findById(savedTag._id);
+
+      expect(deletedTag).to.be.null;
     });
   });
 });
