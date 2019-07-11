@@ -13,23 +13,31 @@ router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let newUser = await User.findOne({ email: req.body.email });
-  if (newUser) return res.status(400).send("User already registered");
+  try {
+    let newUser = await User.findOne({ email: req.body.email });
+    if (newUser) return res.status(400).send("User already registered");
+  } catch (err) {
+    res.status(400).send(`There has been an error: ${err}`);
+  }
 
-  newUser = await User.findOne({ email: req.body.username });
-  if (newUser) return res.status(400).send("Username taken");
+  try {
+    newUser = await User.findOne({ email: req.body.username });
+    if (newUser) return res.status(400).send("Username taken");
 
-  newUser = new User(_.pick(req.body, ["username", "email", "password"]));
+    newUser = new User(_.pick(req.body, ["username", "email", "password"]));
 
-  const salt = await bcrtpt.genSalt(10);
-  newUser.password = await bcrtpt.hash(newUser.password, salt);
-  await newUser.save();
+    const salt = await bcrtpt.genSalt(10);
+    newUser.password = await bcrtpt.hash(newUser.password, salt);
+    await newUser.save();
 
-  const token = newUser.generateAuthToken();
+    const token = newUser.generateAuthToken();
 
-  res
-    .header("x-auth-token", token)
-    .send(_.pick(newUser, ["_id", "username", "email"]));
+    res
+      .header("x-auth-token", token)
+      .send(_.pick(newUser, ["_id", "username", "email"]));
+  } catch (err) {
+    res.status(400).send(`There has been an error: ${err}`);
+  }
 });
 
 module.exports = router;
