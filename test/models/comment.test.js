@@ -72,4 +72,53 @@ describe("Comment model test", () => {
       expect(actual).to.equal(expected);
     });
   });
+
+  describe("save comment", () => {
+    it("save comment", async () => {
+      const comment = new Comment({
+        author: "507f191e810c19729de860ea",
+        text: "This is a test to ensure that comments are being saved properly."
+      });
+      const savedComment = await comment.save();
+      const expected =
+        "This is a test to ensure that comments are being saved properly.";
+      const actual = savedComment.text;
+      expect(actual).to.equal(expected);
+    });
+  });
+  describe("delete comment", () => {
+    it("deletes a comment using its text content", async () => {
+      // Setup dummy comment
+      const testComment = new Comment({
+        author: "507f1f77bcf86cd799439011",
+        text:
+          "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage"
+      });
+      await testComment.save();
+      await Comment.deleteOne({
+        text:
+          "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage"
+      });
+      const deletedComment = await Comment.findOne({
+        text:
+          "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage"
+      });
+
+      expect(deletedComment).to.be.null;
+    });
+
+    it("deletes a comment using its _id", async () => {
+      // Setup dummy post
+      const post = new Comment({
+        author: "507f1f77bcf86cd799439011",
+        text:
+          "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage"
+      });
+      const testComment = await post.save();
+      await Comment.findByIdAndDelete(testComment._id);
+      const deletedComment = await Comment.findById(testComment._id);
+
+      expect(deletedComment).to.be.null;
+    });
+  });
 });
