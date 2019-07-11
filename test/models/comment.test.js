@@ -72,4 +72,19 @@ describe("Comment model test", () => {
       expect(actual).to.equal(expected);
     });
   });
+
+  describe("save comment", () => {
+    it("save comment", async () => {
+      const comment = new Comment({
+        author: "507f191e810c19729de860ea",
+        text: "This is a test to ensure that comments are being saved properly."
+      });
+      const savedComment = await comment.save();
+      const expected =
+        "This is a test to ensure that comments are being saved properly.";
+      const actual = savedComment.text;
+      expect(actual).to.equal(expected);
+    });
+  });
+  describe("delete comment", () => {});
 });
