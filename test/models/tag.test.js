@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const expect = require("chai").expect;
 // Test database for testing
-const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
-mongoose.connect(mongoDB, { useNewUrlParser: true });
+
 const { Tag } = require("../../models/Tag");
 
 describe("Tag model test", () => {
   before(async () => {
+    const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
+    mongoose.connect(mongoDB, { useNewUrlParser: true });
     await Tag.deleteMany({});
   });
   afterEach(async () => {
