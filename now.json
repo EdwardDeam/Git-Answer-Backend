@@ -2,7 +2,8 @@
   "name": "git-answer-backend",
   "alias": "git-answer-backend",
   "env": {
-    "DB_URL": "mongodb+srv://admin:VMCTuRO8rZUgBxII@cluster0-pg6kq.mongodb.net/test?retryWrites=true&w=majority"
+    "DB_URL": "mongodb+srv://admin:VMCTuRO8rZUgBxII@cluster0-pg6kq.mongodb.net/test?retryWrites=true&w=majority",
+    "JWT_SECRET": "nFt%oQxN4Bc*gMqH^Un12@5^s6$!Y@KIXHVt%@@262T8ehrW*#Qny$UM5gp1nP8xYV1Azq0#"
   },
   "version": 2,
   "builds": [{ "src": "api.js", "use": "@now/node" }],
