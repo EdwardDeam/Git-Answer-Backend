@@ -5,7 +5,7 @@
   "main": "api.js",
   "scripts": {
     "start": "nodemon api.js",
-    "test": "mocha tests/**/*.js"
+    "test": "mocha --recursive --timeout 10000"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
     "now": "^15.7.0",
+    "sinon": "^7.3.2",
     "supertest": "^4.0.2"
   }
 }
