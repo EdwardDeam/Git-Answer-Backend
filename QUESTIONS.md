@@ -8,8 +8,8 @@ TODO: Excellent use of libraries and a complete and detailed description of he l
 
 ## Provide an overview and description of your source control process.
 
-Our source control was based around the git / github workflow. We created two repositories on GitHub, for the Node/Express Server and one for the React app. We used multiple feature branches so that individual work wouldnt have an impact on the main working code, and made an effort to make frequent commits so that it was easy to see what changes where made if something went wrong.
-In addition to this we added [Travis CI](https://travis-ci.org/). This utility integrates with GitHub and runs `npm test` on a virtual server. This final check made sure that all tests would still pass with the new code before it was merged.
+Our source control was based around the git / github workflow. We created two repositories on GitHub, one for the Node/Express Server and one for the React app. We used multiple feature branches so that individual work wouldn't have an impact on the main working code, and made an effort to make frequent commits so that it was easy to see what changes where made if something went wrong.  
+In addition to this we added [Travis CI](https://travis-ci.org/). This utility integrates with GitHub and runs `npm test` on a virtual server. This process is run after a pull request is created. This final check made sure that all tests would still pass with the new code before it was merged.
 
 ## Demonstrate sound design architecture
 
