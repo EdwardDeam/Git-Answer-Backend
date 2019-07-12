@@ -10,7 +10,12 @@ router.get("/", async (req, res) => {
   res.send(posts);
 });
 
-// TODO: Only get comments related to a specific post
+// Get a single post by _id
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const post = await Post.findById(id);
+  res.send(post);
+});
 
 // Add post to database
 router.post("/", async (req, res) => {
@@ -55,7 +60,6 @@ router.post("/", async (req, res) => {
 // Delete post from database
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  console.log("ID: ", id);
   try {
     const foundPost = await Post.findOneAndDelete({ _id: id });
     return res.status(200).send(`Post deleted: ${foundPost.title}`);

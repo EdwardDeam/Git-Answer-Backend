@@ -10,6 +10,7 @@ describe("Post Routes", () => {
 
   let server;
   let testPostID;
+  const testPostTitle = "Testing Post";
 
   before(async () => {
     const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
@@ -24,20 +25,12 @@ describe("Post Routes", () => {
     await server.close();
   });
 
-  describe("GET /posts", () => {
-    it("can list posts", async () => {
-      await request(server)
-        .get("/posts")
-        .expect(200);
-    });
-  });
-
   describe("POST /posts", () => {
-    it("can post new posts", async () => {
+    it("can create a new post", async () => {
       await request(server)
         .post("/posts")
         .send({
-          title: "Test Posting",
+          title: "Testing Post",
           author: "507f1f77bcf86cd799439011",
           text:
             "To generate a new ObjectId using ObjectId() with a unique hexadecimal string: sal;kdfj;aslkfjl;a s;lkfdas;d ;l sad;flksa elaeir;mviiew s;lfaeij;dslkfm;lezifnz;sd vief;lkzmsdl/vkmzsd lsdkf;ei;zsdlkn;zlsefizds",
@@ -49,6 +42,22 @@ describe("Post Routes", () => {
         .then(response => {
           // Save the post _ID for use in other tests
           testPostID = response.body._id;
+        });
+    });
+  });
+
+  describe("GET /posts", () => {
+    it("can get a list of posts", async () => {
+      await request(server)
+        .get("/posts")
+        .expect(200);
+    });
+    it("can get a single post by _id", async () => {
+      await request(server)
+        .get(`/posts/${testPostID}`)
+        .expect(200)
+        .then(response => {
+          expect(response.body.title).to.equal(testPostTitle);
         });
     });
   });
