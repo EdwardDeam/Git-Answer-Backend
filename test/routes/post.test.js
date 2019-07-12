@@ -17,6 +17,12 @@ describe("Post Routes", () => {
       "To generate a new ObjectId using ObjectId() with a unique hexadecimal string: sal;kdfj;aslkfjl;a s;lkfdas;d ;l sad;flksa elaeir;mviiew s;lfaeij;dslkfm;lezifnz;sd vief;lkzmsdl/vkmzsd lsdkf;ei;zsdlkn;zlsefizds",
     tags: ["CSS", "Test Tag"]
   };
+  const testPostNoTags = {
+    title: "Testing Post",
+    author: "507f1f77bcf86cd799439011",
+    text:
+      "To generate a new ObjectId using ObjectId() with a unique hexadecimal string: sal;kdfj;aslkfjl;a s;lkfdas;d ;l sad;flksa elaeir;mviiew s;lfaeij;dslkfm;lezifnz;sd vief;lkzmsdl/vkmzsd lsdkf;ei;zsdlkn;zlsefizds"
+  };
 
   before(async () => {
     const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
@@ -47,6 +53,21 @@ describe("Post Routes", () => {
           // Save the post _ID for use in other tests
           testPostID = response.body._id;
         });
+    });
+    it("can create a post with no tags", async () => {
+      await request(server)
+        .post("/posts")
+        .send(testPostNoTags)
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .expect(200);
+    });
+    it("fails if body is empty", async () => {
+      await request(server)
+        .post("/posts")
+        .send({})
+        .set("Accept", "application/json")
+        .expect(400);
     });
   });
 

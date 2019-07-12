@@ -61,9 +61,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   // Check that new updated post is valid.
   const { error } = validatePost(req.body);
-  if (error) {
-    return res.status(400).send(error.details[0].message);
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   // Find and add new tags
   // TODO: Move this to helper function
@@ -83,8 +81,6 @@ router.put("/:id", async (req, res) => {
     }
   }
   req.body.tags = newTags;
-  const updateObj = _.pick(req.body, ["title", "author", "text", "tags"]);
-
   try {
     await Post.findByIdAndUpdate(
       { _id: req.params.id },
