@@ -1,24 +1,32 @@
 # Git Answer Backend Code Style
+
+## Status
+
+[![Build Status](https://travis-ci.org/EdwardDeam/Git-Answer-Backend.svg?branch=master)](https://travis-ci.org/EdwardDeam/Git-Answer-Backend)
+[![Coverage Status](https://coveralls.io/repos/github/EdwardDeam/Git-Answer-Backend/badge.svg?branch=master)](https://coveralls.io/github/EdwardDeam/Git-Answer-Backend?branch=master)
+
 From the rubric:  
 `The code adheres to all team standards. The code is exceptionally well organised and very easy to follow. Comments are complete and useful; variables' and functions’ purposes are clearly communicated by their names.`
 
 So try and keep that in mind when naming variables and functions. And add comments to code as you write it, much easier than having to add them in on thursday night!
 
 ## Prefered Packages
+
 Try to use npm packages that have been used in the class as a preference. This makes it easier for everyone to know what is happening and easier for the teachers to help debug our code.
 
 1. Joi for data validation.
 2. JsonWebToken for creating tokens.
 3. bCrypt for hashing passwords.
 
-For pulling data out of req.body I would like to use [lodash](https://www.npmjs.com/package/lodash)  
-#### Lodash( _ ) .pick
+For pulling data out of req.body I would like to use [lodash](https://www.npmjs.com/package/lodash)
+
+#### Lodash( \_ ) .pick
 
 ```javascript
-const _ = require('lodash');
-const object = { 'a': 1, 'b': '2', 'c': 3 };
- 
-_.pick(object, ['a', 'c']);
+const _ = require("lodash");
+const object = { a: 1, b: "2", c: 3 };
+
+_.pick(object, ["a", "c"]);
 // => { 'a': 1, 'c': 3 }
 ```
 
@@ -26,7 +34,7 @@ _.pick(object, ['a', 'c']);
 
 ```javascript
 const object = { 'a': 1, 'b': '2', 'c': 3 };
- 
+
 const newObject;
 newObject.a = object.a;
 newObject.c = object.c;
@@ -40,17 +48,22 @@ And will be pretty helpful when creating and updating bigger models.
 ## Testing
 
 TODO: Pick a testing framework
+
 1. Chai, Mocha & Sinon
 2. Jest
 
 ## Code style
+
 ### Linter / Code Formating
+
 It looks like we already have the [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) package installed in VSCode and we should keep that as the linter.
-  
+
 ### Async & Await
-Prefer to use Async Await over Promise.then() whenever possible.  
+
+Prefer to use Async Await over Promise.then() whenever possible.
 
 #### Messy and hard to debug
+
 ```javascript
 router.post("/", (req, res) => {
   let user = User.findOne({ email: req.body.email })
@@ -65,7 +78,7 @@ router.post("/", (req, res) => {
           bcrtpt.hash(user.password, salt)
             .then(password =>{
               user.password = password;
-              user.save() 
+              user.save()
                 .then(user => {
                   const token = user.generateAuthToken();
 
@@ -76,37 +89,43 @@ router.post("/", (req, res) => {
         })
     })
 
-  
+
   const salt = await bcrtpt.genSalt(10);
   user.password = await bcrtpt.hash(user.password, salt);
   await user.save();
 
-  
+
 });
 ```
+
 #### Clean easy to read what is happening
+
 ```javascript
 router.post("/", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User already registered");
 
-  user = new User(_.pick(req.body, 
-                 ["firstName", "lastName", "email", "password"]));
+  user = new User(
+    _.pick(req.body, ["firstName", "lastName", "email", "password"])
+  );
   const salt = await bcrtpt.genSalt(10);
   user.password = await bcrtpt.hash(user.password, salt);
   await user.save();
 
   const token = user.generateAuthToken();
 
-  res.header("x-auth-token", token).send(_.pick(user,
-            ["_id", "firstName", "lastName", "email"]));
+  res
+    .header("x-auth-token", token)
+    .send(_.pick(user, ["_id", "firstName", "lastName", "email"]));
 });
 ```
 
 ### Wrapping Promises in try catch blocks
+
 In future versions of NODE unhandled promise rejections will cause the app to crash, potentialy making the backend server unstable. To future proof the app whenever possible please wrap Promises in try catch blocks
 
 #### Example
+
 ```javascript
 const callApi = async () => {
   try {
@@ -115,5 +134,5 @@ const callApi = async () => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 ```
