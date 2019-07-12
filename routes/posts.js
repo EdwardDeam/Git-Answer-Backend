@@ -49,12 +49,53 @@ router.post("/", async (req, res) => {
 
   // Create and save the new post
   const newPost = new Post(
-    _.pick(req.body, ["_id", "title", "author", "text", "tags"])
+    _.pick(req.body, ["title", "author", "text", "tags"])
   );
   await newPost.save();
 
   // Return new post
   res.send(newPost);
+});
+
+// Update a post by its _id
+router.put("/:id", async (req, res) => {
+  // Check that new updated post is valid.
+  const { error } = validatePost(req.body);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
+  // Find and add new tags
+  // TODO: Move this to helper function
+  const newTags = [];
+  if (req.body.tags) {
+    for (let i = 0; i < req.body.tags.length; i++) {
+      let tag = req.body.tags[i];
+
+      let newTag = await Tag.findOne({ name: tag });
+      if (newTag) {
+        newTags.push(newTag);
+      } else {
+        newTag = new Tag({ name: tag });
+        await newTag.save();
+        newTags.push(newTag);
+      }
+    }
+  }
+  req.body.tags = newTags;
+  const updateObj = _.pick(req.body, ["title", "author", "text", "tags"]);
+
+  try {
+    await Post.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: req.body
+      }
+    );
+    res.status(200).send("Updated Successfully");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // Delete post from database

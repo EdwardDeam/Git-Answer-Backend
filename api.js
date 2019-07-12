@@ -11,7 +11,8 @@ const PORT = config.port;
   try {
     await mongoose.connect(config.mongoURI, {
       useNewUrlParser: true,
-      useCreateIndex: true
+      useCreateIndex: true,
+      useFindAndModify: false
     });
     console.info("Connected to MongoDB");
   } catch (error) {

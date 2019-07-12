@@ -10,11 +10,21 @@ describe("Post Routes", () => {
 
   let server;
   let testPostID;
-  const testPostTitle = "Testing Post";
+  const testPost = {
+    title: "Testing Post",
+    author: "507f1f77bcf86cd799439011",
+    text:
+      "To generate a new ObjectId using ObjectId() with a unique hexadecimal string: sal;kdfj;aslkfjl;a s;lkfdas;d ;l sad;flksa elaeir;mviiew s;lfaeij;dslkfm;lezifnz;sd vief;lkzmsdl/vkmzsd lsdkf;ei;zsdlkn;zlsefizds",
+    tags: ["CSS", "Test Tag"]
+  };
 
   before(async () => {
     const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
-    await mongoose.connect(mongoDB, { useNewUrlParser: true });
+    await mongoose.connect(mongoDB, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false
+    });
     // Make sure we have a clear database
     await mongoose.connection.db.dropDatabase();
     server = app.listen(3001);
@@ -29,13 +39,7 @@ describe("Post Routes", () => {
     it("can create a new post", async () => {
       await request(server)
         .post("/posts")
-        .send({
-          title: "Testing Post",
-          author: "507f1f77bcf86cd799439011",
-          text:
-            "To generate a new ObjectId using ObjectId() with a unique hexadecimal string: sal;kdfj;aslkfjl;a s;lkfdas;d ;l sad;flksa elaeir;mviiew s;lfaeij;dslkfm;lezifnz;sd vief;lkzmsdl/vkmzsd lsdkf;ei;zsdlkn;zlsefizds",
-          tags: ["CSS", "Test Tag"]
-        })
+        .send(testPost)
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
         .expect(200)
@@ -57,8 +61,24 @@ describe("Post Routes", () => {
         .get(`/posts/${testPostID}`)
         .expect(200)
         .then(response => {
-          expect(response.body.title).to.equal(testPostTitle);
+          expect(response.body.title).to.equal(testPost.title);
         });
+    });
+  });
+
+  describe("PUT /posts", () => {
+    it("can update a single post by _id", async () => {
+      const updatedPost = {
+        title: "Updated Post Title",
+        author: "507f1f77bcf86cd799439011",
+        text:
+          "This Text Has Been Updated !!!!g ObjectId() with a unique hexadecimal string: sal;kdfj;aslkfjl;a s;lkfdas;d ;l sad;flksa elaeir;mviiew s;lfaeij;dslkfm;lezifnz;sd vief;lkzmsdl/vkmzsd lsdkf;ei;zsdlkn;zlsefizds",
+        tags: ["CSS", "New Tag"]
+      };
+      await request(server)
+        .put(`/posts/${testPostID}`)
+        .send(updatedPost)
+        .expect(200);
     });
   });
 

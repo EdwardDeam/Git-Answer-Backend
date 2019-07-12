@@ -12,7 +12,11 @@ describe("Comment Routes", () => {
 
   before(async () => {
     const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
-    await mongoose.connect(mongoDB, { useNewUrlParser: true });
+    await mongoose.connect(mongoDB, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false
+    });
     await mongoose.connection.db.dropDatabase();
 
     server = app.listen(3001);
