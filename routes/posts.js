@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
 
   // Create and save the new post
   const newPost = new Post(
-    _.pick(req.body, ["title", "author", "text", "tags"])
+    _.pick(req.body, ["_id", "title", "author", "text", "tags"])
   );
   await newPost.save();
 
@@ -55,6 +55,7 @@ router.post("/", async (req, res) => {
 // Delete post from database
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
+  console.log("ID: ", id);
   try {
     const foundPost = await Post.findOneAndDelete({ _id: id });
     return res.status(200).send(`Post deleted: ${foundPost.title}`);

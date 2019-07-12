@@ -9,10 +9,12 @@ describe("Post Routes", () => {
   });
 
   let server;
+  let testPostID;
 
   before(async () => {
     const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
     await mongoose.connect(mongoDB, { useNewUrlParser: true });
+    // Make sure we have a clear database
     await mongoose.connection.db.dropDatabase();
     server = app.listen(3001);
   });
@@ -29,6 +31,7 @@ describe("Post Routes", () => {
         .expect(200);
     });
   });
+
   describe("POST /posts", () => {
     it("can post new posts", async () => {
       await request(server)
@@ -42,7 +45,26 @@ describe("Post Routes", () => {
         })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
+        .expect(200)
+        .then(response => {
+          // Save the post _ID for use in other tests
+          testPostID = response.body._id;
+        });
+    });
+  });
+
+  describe("DELETE /posts", () => {
+    it("can delete a post by _id param", async () => {
+      await request(server)
+        .delete(`/posts/${testPostID}`)
+        .set("Accept", "application/json")
         .expect(200);
+    });
+    it("fails if _id is not found", async () => {
+      await request(server)
+        .delete("/posts/1")
+        .set("Accept", "application/json")
+        .expect(400);
     });
   });
 });
