@@ -10,9 +10,11 @@ describe("Comment Routes", () => {
 
   let server;
 
-  before(() => {
+  before(async () => {
     const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
-    mongoose.connect(mongoDB, { useNewUrlParser: true });
+    await mongoose.connect(mongoDB, { useNewUrlParser: true });
+    await mongoose.connection.db.dropDatabase();
+
     server = app.listen(3001);
   });
 
@@ -57,6 +59,12 @@ describe("Comment Routes", () => {
         .send({
           author: "507f1f77bcf86cd799439011"
         })
+        .set("Accept", "application/json")
+        .expect(400);
+    });
+    it("fails if text  and author is missing in body", async () => {
+      await request(server)
+        .post("/comments")
         .set("Accept", "application/json")
         .expect(400);
     });

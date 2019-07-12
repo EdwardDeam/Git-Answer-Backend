@@ -10,9 +10,10 @@ describe("Post Routes", () => {
 
   let server;
 
-  before(() => {
+  before(async () => {
     const mongoDB = "mongodb://127.0.0.1/gitanswer_testdb";
-    mongoose.connect(mongoDB, { useNewUrlParser: true });
+    await mongoose.connect(mongoDB, { useNewUrlParser: true });
+    await mongoose.connection.db.dropDatabase();
     server = app.listen(3001);
   });
 

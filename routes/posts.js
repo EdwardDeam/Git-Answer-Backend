@@ -24,6 +24,8 @@ router.post("/", async (req, res) => {
     // req.body.tags.forEach(tag => {
     for (let i = 0; i < req.body.tags.length; i++) {
       let tag = req.body.tags[i];
+      // const { error } = validateTag(tag);
+      // if (error) return res.status(400).send(error.details[0].message);
       let newTag = await Tag.findOne({ name: tag });
       if (newTag) {
         newTags.push(newTag);
