@@ -85,6 +85,11 @@ describe("Post Routes", () => {
           expect(response.body.title).to.equal(testPost.title);
         });
     });
+    it("sends 400 if a post id doesnt exist", async () => {
+      await request(server)
+        .get("/posts/asdasd")
+        .expect(400);
+    });
   });
 
   describe("PUT /posts", () => {
@@ -100,6 +105,18 @@ describe("Post Routes", () => {
         .put(`/posts/${testPostID}`)
         .send(updatedPost)
         .expect(200);
+    });
+    it("fails if updated value is invalid", async () => {
+      const updatedPost = {
+        title: "Short",
+        author: "507f1f77bcf86cd799439011",
+        text: "k",
+        tags: ["CSS", "New Tag"]
+      };
+      await request(server)
+        .put(`/posts/${testPostID}`)
+        .send(updatedPost)
+        .expect(400);
     });
   });
 

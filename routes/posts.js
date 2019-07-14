@@ -13,8 +13,12 @@ router.get("/", async (req, res) => {
 // Get a single post by _id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const post = await Post.findById(id);
-  res.send(post);
+  try {
+    const post = await Post.findOne({ _id: id });
+    res.send(post);
+  } catch (error) {
+    res.status(400).send(`Post with ID ${id} not found.`);
+  }
 });
 
 // Add post to database
@@ -90,7 +94,7 @@ router.put("/:id", async (req, res) => {
     );
     res.status(200).send("Updated Successfully");
   } catch (error) {
-    console.error(error);
+    return res.status(400).send(`Post updating error: ${error}`);
   }
 });
 
@@ -100,8 +104,8 @@ router.delete("/:id", async (req, res) => {
   try {
     const foundPost = await Post.findOneAndDelete({ _id: id });
     return res.status(200).send(`Post deleted: ${foundPost.title}`);
-  } catch (err) {
-    return res.status(400).send(`Post deletion error: ${err}`);
+  } catch (error) {
+    return res.status(400).send(`Post deletion error: ${error}`);
   }
 });
 
