@@ -18,8 +18,8 @@ router.post("/", async (req, res) => {
   try {
     let newUser = await User.findOne({ email: email });
     if (newUser) return res.status(400).send("Email already registered");
-  } catch (err) {
-    res.status(400).send(`There has been an error: ${err}`);
+  } catch (error) {
+    res.status(400).send(`There has been an error: ${error}`);
   }
 
   try {
@@ -36,10 +36,10 @@ router.post("/", async (req, res) => {
 
     res
       .header("x-auth-token", token)
-      .send(_.pick(newUser, ["_id", "username", "email"]));
-  } catch (err) {
+      .send({ _id: newUser._id, username, email });
+  } catch (error) {
     console.log("We're here");
-    res.status(400).send(`There has been an error: ${err}`);
+    res.status(400).send(`There has been an error: ${error}`);
   }
 });
 
