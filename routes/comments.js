@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const { Comment, validateComment } = require("../models/Comment");
 const express = require("express");
 const router = express.Router();
@@ -19,8 +18,9 @@ router.post("/", async (req, res) => {
   const { error } = validateComment(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  const { author, text } = req.body;
   // Create and save the new comment
-  const newComment = new Comment(_.pick(req.body, ["author", "text"]));
+  const newComment = new Comment({ author, text });
   try {
     await newComment.save();
 

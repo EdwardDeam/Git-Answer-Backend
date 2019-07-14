@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const { Post, validatePost } = require("../models/Post");
 const { Tag, validateTag } = require("../models/Tag");
 const express = require("express");
@@ -27,6 +26,7 @@ router.post("/", async (req, res) => {
   const { error } = validatePost(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  const { title, author, text } = req.body;
   // Find and add new tags
   const newTags = [];
   if (req.body.tags) {
@@ -44,17 +44,11 @@ router.post("/", async (req, res) => {
         newTags.push(newTag);
       }
     }
-    req.body.tags = newTags;
     //)};
-  } else {
-    // if no tags present set to empty array
-    req.body.tags = newTags;
   }
 
   // Create and save the new post
-  const newPost = new Post(
-    _.pick(req.body, ["title", "author", "text", "tags"])
-  );
+  const newPost = new Post({ title, author, text, tags: newTags });
   await newPost.save();
 
   // Return new post
