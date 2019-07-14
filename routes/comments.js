@@ -12,8 +12,6 @@ router.get("/", async (req, res) => {
 
 // Add comment to database
 router.post("/", async (req, res) => {
-  console.log("post comments");
-  console.log(req.body);
   // Test against Joi validation and return the first error
   const { error } = validateComment(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -23,9 +21,7 @@ router.post("/", async (req, res) => {
   const newComment = new Comment({ author, text });
   try {
     await newComment.save();
-
-    // Log and return new comment
-    console.log(`Comment (${newComment._id}) saved.`);
+    // return new comment
     res.send(_.pick(newComment, ["author", "text"]));
   } catch (err) {
     console.log(`There has been an error ${err}`);
