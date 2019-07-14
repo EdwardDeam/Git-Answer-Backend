@@ -9,6 +9,8 @@ router.get("/me", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  console.log("posting usersdrefdsvxc");
+  console.log(req.body);
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -36,7 +38,23 @@ router.post("/", async (req, res) => {
       .header("x-auth-token", token)
       .send(_.pick(newUser, ["_id", "username", "email"]));
   } catch (err) {
+    console.log("We're here");
     res.status(400).send(`There has been an error: ${err}`);
+  }
+});
+
+router.post("/login", async (req, res) => {
+  console.log("login");
+  const { username, password } = req.body;
+  try {
+    const foundUser = await User.findOne({ username: username });
+    if (!foundUser) return res.status(400).send("Incorrect Details (username)");
+    const result = bcrtpt.compareSync(password, foundUser.password);
+    if (!result) return res.status(400).send("Incorrect Details (password)");
+    const token = foundUser.generateAuthToken();
+    return res.status(200).send(token);
+  } catch (err) {
+    return res.status(400).send(`There has been an error: ${err}`);
   }
 });
 

@@ -18,14 +18,14 @@ describe("User model test", () => {
     await mongoose.connection.close();
   });
 
-  // Sanity check that Tag has been defined.
+  // Sanity check that User has been defined.
   it("Has a module", () => {
     expect(User).not.to.be.undefined;
   });
 
   describe("Get User", () => {
     it("Gets all users", async () => {
-      // Setup dummy tags
+      // Setup dummy users
       const user = new User({
         username: "test",
         email: "test@hotmail.com",
