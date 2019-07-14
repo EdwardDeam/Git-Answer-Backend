@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const bcrtpt = require("bcrypt");
 const { User, validateUser } = require("../models/User");
 const express = require("express");
@@ -15,18 +14,19 @@ router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  const { username, email, password } = req.body;
   try {
-    let newUser = await User.findOne({ email: req.body.email });
-    if (newUser) return res.status(400).send("User already registered");
-  } catch (err) {
-    res.status(400).send(`There has been an error: ${err}`);
+    let newUser = await User.findOne({ email: email });
+    if (newUser) return res.status(400).send("Email already registered");
+  } catch (error) {
+    res.status(400).send(`There has been an error: ${error}`);
   }
 
   try {
-    newUser = await User.findOne({ email: req.body.username });
+    newUser = await User.findOne({ username: username });
     if (newUser) return res.status(400).send("Username taken");
 
-    newUser = new User(_.pick(req.body, ["username", "email", "password"]));
+    newUser = new User({ username, email, password });
 
     const salt = await bcrtpt.genSalt(10);
     newUser.password = await bcrtpt.hash(newUser.password, salt);
@@ -36,10 +36,10 @@ router.post("/", async (req, res) => {
 
     res
       .header("x-auth-token", token)
-      .send(_.pick(newUser, ["_id", "username", "email"]));
-  } catch (err) {
+      .send({ _id: newUser._id, username, email });
+  } catch (error) {
     console.log("We're here");
-    res.status(400).send(`There has been an error: ${err}`);
+    res.status(400).send(`There has been an error: ${error}`);
   }
 });
 

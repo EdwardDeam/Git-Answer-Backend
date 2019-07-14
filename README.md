@@ -1,10 +1,5 @@
 # Git Answer Backend Code Style
 
-## Status
-
-[![Build Status](https://travis-ci.org/EdwardDeam/Git-Answer-Backend.svg?branch=master)](https://travis-ci.org/EdwardDeam/Git-Answer-Backend)
-[![Coverage Status](https://coveralls.io/repos/github/EdwardDeam/Git-Answer-Backend/badge.svg?branch=master)](https://coveralls.io/github/EdwardDeam/Git-Answer-Backend?branch=master)
-
 From the rubric:  
 `The code adheres to all team standards. The code is exceptionally well organised and very easy to follow. Comments are complete and useful; variables' and functions’ purposes are clearly communicated by their names.`
 
@@ -18,39 +13,9 @@ Try to use npm packages that have been used in the class as a preference. This m
 2. JsonWebToken for creating tokens.
 3. bCrypt for hashing passwords.
 
-For pulling data out of req.body I would like to use [lodash](https://www.npmjs.com/package/lodash)
-
-#### Lodash( \_ ) .pick
-
-```javascript
-const _ = require("lodash");
-const object = { a: 1, b: "2", c: 3 };
-
-_.pick(object, ["a", "c"]);
-// => { 'a': 1, 'c': 3 }
-```
-
-#### This is cleaner than
-
-```javascript
-const object = { 'a': 1, 'b': '2', 'c': 3 };
-
-const newObject;
-newObject.a = object.a;
-newObject.c = object.c;
-
-// newObject => { 'a': 1, 'c': 3 }
-```
-
-And will be pretty helpful when creating and updating bigger models.  
-[.pick()](https://lodash.com/docs/4.17.11#pick)
-
 ## Testing
 
-TODO: Pick a testing framework
-
-1. Chai, Mocha & Sinon
-2. Jest
+Unit testing will use [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/). For testing endpoints we will use [Supertest](https://github.com/visionmedia/supertest) and a local Mongo test database. To check the coverage of code that has been tested we will use [Istanbul/NYC](https://github.com/istanbuljs/nyc). This package will show us what percentage of functions are being tested, as well as which lines are not being run during a test. As per the rubric, we will aim for 90% code coverage.
 
 ## Code style
 
@@ -88,7 +53,6 @@ router.post("/", (req, res) => {
             })
         })
     })
-
 
   const salt = await bcrtpt.genSalt(10);
   user.password = await bcrtpt.hash(user.password, salt);
