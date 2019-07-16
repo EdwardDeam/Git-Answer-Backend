@@ -9,8 +9,6 @@ router.get("/me", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log("posting usersdrefdsvxc");
-  console.log(req.body);
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -36,9 +34,10 @@ router.post("/", async (req, res) => {
 
     res
       .header("x-auth-token", token)
+      .status(200)
       .send({ _id: newUser._id, username, email });
   } catch (error) {
-    console.log("We're here");
+    console.log(error);
     res.status(400).send(`There has been an error: ${error}`);
   }
 });
