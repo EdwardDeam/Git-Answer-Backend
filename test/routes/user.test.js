@@ -39,6 +39,7 @@ describe("Post Users", () => {
         .post("/users")
         .send(testUser)
         .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
         .expect(200)
         .then(response => {
           // Save the post _ID for use in other tests
@@ -51,6 +52,11 @@ describe("Post Users", () => {
         .send({})
         .set("Accept", "application/json")
         .expect(400);
+    });
+  });
+  describe("GET /logins", () => {
+    it("User can login", async () => {
+      await request(server);
     });
   });
 });
