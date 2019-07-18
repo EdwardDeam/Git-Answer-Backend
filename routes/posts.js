@@ -2,6 +2,7 @@ const { Post, validatePost } = require("../models/Post");
 const { Tag, validateTag } = require("../models/Tag");
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 // Return all posts
 router.get("/", async (req, res) => {
@@ -13,7 +14,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await Post.findOne({ _id: id });
+    const post = await Post.findOne({ _id: id }).populate("author");
     res.send(post);
   } catch (error) {
     res.status(400).send(`Post with ID ${id} not found.`);
@@ -21,7 +22,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Add post to database
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   // Test against Joi validation and return the first error
   const { error } = validatePost(req.body);
   if (error) return res.status(400).send(error.details[0].message);
