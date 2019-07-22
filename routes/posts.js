@@ -5,6 +5,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
 
+
 // Return all posts
 router.get("/", async (req, res) => {
   const posts = await Post.find({});
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await Post.findOne({ _id: id });
+    const post = await Post.findOne({ _id: id }).populate("author");
     res.send(post);
   } catch (error) {
     res.status(400).send(`Post with ID ${id} not found.`);
@@ -32,6 +33,7 @@ router.post("/", auth, async (req, res) => {
     author,
     tags
   }
+
   // Test against Joi validation and return the first error
   const { error } = validatePost(post);
   if (error) return res.status(400).send(error.details[0].message);
