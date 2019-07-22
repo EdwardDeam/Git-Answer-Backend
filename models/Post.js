@@ -25,7 +25,7 @@ const validatePost = post => {
       .regex(/^[0-9a-fA-F]{24}$/, "mongo object id")
       .required(),
     text: Joi.string()
-      .min(200)
+      .min(5)
       .required(),
     pageViews: Joi.number()
       .integer()

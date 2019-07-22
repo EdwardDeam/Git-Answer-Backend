@@ -2,7 +2,9 @@ const { Post, validatePost } = require("../models/Post");
 const { Tag, validateTag } = require("../models/Tag");
 const express = require("express");
 const router = express.Router();
-const auth = require("../middleware/auth");
+const auth = require('../middleware/auth');
+const mongoose = require('mongoose');
+
 
 // Return all posts
 router.get("/", async (req, res) => {
@@ -23,11 +25,19 @@ router.get("/:id", async (req, res) => {
 
 // Add post to database
 router.post("/", auth, async (req, res) => {
+  const { _id: author } = req.user
+  const { title, text, tags } = req.body
+  const post = {
+    title,
+    text,
+    author,
+    tags
+  }
+
   // Test against Joi validation and return the first error
-  const { error } = validatePost(req.body);
+  const { error } = validatePost(post);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const { title, author, text } = req.body;
   // Find and add new tags
   const newTags = [];
   if (req.body.tags) {
@@ -47,7 +57,6 @@ router.post("/", auth, async (req, res) => {
     }
     //)};
   }
-
   // Create and save the new post
   const newPost = new Post({ title, author, text, tags: newTags });
   await newPost.save();
