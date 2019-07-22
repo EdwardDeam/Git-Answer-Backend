@@ -1,0 +1,11 @@
+{
+  "name": "git-answer-backend",
+  "alias": "git-answer-backend",
+  "env": {
+    "DB_URL": "@db_url",
+    "JWT_SECRET": "@jwt_secret"
+  },
+  "version": 2,
+  "builds": [{ "src": "api.js", "use": "@now/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "api.js" }]
+}
