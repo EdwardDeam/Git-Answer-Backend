@@ -2,11 +2,18 @@ const bcrtpt = require("bcrypt");
 const { User, validateUser } = require("../models/User");
 const express = require("express");
 const router = express.Router();
+const auth = require('../middleware/auth')
 
 router.get("/me", async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
   req.send(user);
 });
+
+router.get('/current-user', auth, async (req, res) => {
+  res.send({
+    currentUser: req.user
+  })
+})
 
 router.post("/", async (req, res) => {
   console.log("posting usersdrefdsvxc");
