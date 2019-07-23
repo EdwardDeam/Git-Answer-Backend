@@ -32,6 +32,7 @@ const validatePost = post => {
       .positive(),
     tags: Joi.array().items(Joi.string())
   });
+  console.log(post)
   return Joi.validate(post, schema);
 };
 

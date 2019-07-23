@@ -65,8 +65,19 @@ router.post("/", auth, async (req, res) => {
   res.send(newPost);
 });
 
+
 // Update a post by its _id
 router.put("/:id", async (req, res) => {
+  console.log("inside update");
+  // Confirm user matches user of original post
+  const token = req.header("x-auth-token");
+  const decoded = jwt.verify(token, config.jwtSecret);
+  // Decode token, retrieve user
+  req.user = decoded;
+  const { id } = req.params;
+  const foundPost = Post.findById(id);
+  console.log(foundPost);
+
   // Check that new updated post is valid.
   const { error } = validatePost(req.body);
   if (error) return res.status(400).send(error.details[0].message);
