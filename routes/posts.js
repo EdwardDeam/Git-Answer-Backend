@@ -4,6 +4,8 @@ const express = require("express");
 const router = express.Router();
 const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('../config/config')
 
 
 // Return all posts
@@ -71,6 +73,7 @@ router.put("/:id", async (req, res) => {
   console.log("inside update");
   // Confirm user matches user of original post
   const token = req.header("x-auth-token");
+  console.log()
   const decoded = jwt.verify(token, config.jwtSecret);
   // Decode token, retrieve user
   req.user = decoded;
