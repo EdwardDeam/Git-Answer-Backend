@@ -102,14 +102,17 @@ router.put("/:id", async (req, res) => {
       }
     }
   }
-  req.body.tags = newTags;
+  // req.body.tags = newTags;
+  const updatedPostContent = {
+    tags: newTags,
+    comments: [],
+    votes: [],
+    title: req.body.title,
+    author: req.body.author,
+    text: req.body.text
+  }
   try {
-    const updatedPost = await Post.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: req.body
-      }
-    );
+    const updatedPost = await Post.findByIdAndUpdate(req.params.id, updatedPostContent);
     res.status(200).send({
       updatedPost: updatedPost
     });
