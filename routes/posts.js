@@ -104,13 +104,15 @@ router.put("/:id", async (req, res) => {
   }
   req.body.tags = newTags;
   try {
-    await Post.findByIdAndUpdate(
+    const updatedPost = await Post.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $set: req.body
       }
     );
-    res.status(200).send("Updated Successfully");
+    res.status(200).send({
+      updatedPost: updatedPost
+    });
   } catch (error) {
     return res.status(400).send(`Post updating error: ${error}`);
   }
